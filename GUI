@@ -1,0 +1,81 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UserRegistrationForm extends JFrame {
+    private JTextField nameField, emailField;
+    private JPasswordField passwordField, confirmPasswordField;
+    private JButton submitButton, clearButton;
+
+    public UserRegistrationForm() {
+        // Set up the frame
+        setTitle("User Registration Form");
+        setSize(350, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new FlowLayout());
+
+        // Create and add components
+        add(new JLabel("Name:"));
+        nameField = new JTextField(20);
+        add(nameField);
+
+        add(new JLabel("Email:"));
+        emailField = new JTextField(20);
+        add(emailField);
+
+        add(new JLabel("Password:"));
+        passwordField = new JPasswordField(20);
+        add(passwordField);
+
+        add(new JLabel("Confirm Password:"));
+        confirmPasswordField = new JPasswordField(20);
+        add(confirmPasswordField);
+
+        submitButton = new JButton("Submit");
+        clearButton = new JButton("Clear");
+
+        // Add action listeners
+        submitButton.addActionListener(new SubmitButtonListener());
+        clearButton.addActionListener(new ClearButtonListener());
+
+        add(submitButton);
+        add(clearButton);
+
+        // Set frame visibility
+        setVisible(true);
+    }
+
+    private class SubmitButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(null, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Name: " + name + "\nEmail: " + email, "User Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    private class ClearButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            nameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        new UserRegistrationForm();
+    }
+}
